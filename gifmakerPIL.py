@@ -8,9 +8,11 @@ from tqdm import tqdm
 # 透明贴图路径，形如.../character/marisa/sit000.png
 IMAGES_PATH = Path(r"./source/character")
 # 动作xml路径，形如.../character/marisa/marisa.xml
-XMLS_PATH = Path(r"./xmls/character")
+XMLS_PATH = Path(r"./source/character")
+# 非透明贴图路径，形如.../character/marisa/sit000.png
+NOALPHA_PATH = Path(r"./noalpha/character")
 # 生成的gif保存路径，形如.../character/marisa/505.gif
-SAVE_PATH = Path(r"./character")
+SAVE_PATH = Path(r"./gifs/character")
 
 # 一个角色的所有动作
 class character:
@@ -116,18 +118,18 @@ class character:
         
         self.readPos_loop()
         
-    # transparentize, then move the file in xmlspath to imagepath
-    # 透明化，然后将xmlspath中的文件移动到imagepath，我的资源中xmlspath中的贴图不透明，但是比imagePath中的全
+    # transparentize, then move the file in noalphapath to imagepath
+    # 透明化，然后将noalphapath中的文件移动到imagepath，
     def alpha_move(self, destImage: Path):
         tgtImage = destImage.relative_to(IMAGES_PATH)
-        tgtImage = XMLS_PATH / tgtImage
+        tgtImage = NOALPHA_PATH / tgtImage
         
         bgColor = (0, 123, 140) #非透明图的背景色
         
         try:
             image = Image.open(tgtImage)
         except FileNotFoundError as e:
-            print('File not found in XMLS_PATH:', tgtImage)
+            print('File not found in NOALPHA_PATH:', tgtImage)
             return
         
         # If the image does not have an alpha (transparency) channel, add one
@@ -276,14 +278,14 @@ class character:
 class allCharacters:
     
     def __init__(self) -> None:
-        self.charac_names = [i.name for i in IMAGES_PATH.iterdir() if i.name not in ['common', 'ui']]
+        self.charac_names = [i.name for i in IMAGES_PATH.iterdir() if i.name not in ['common', 'ui'] and i.is_dir()]
         self.characsObj = [character(i) for i in self.charac_names]
         
     # 生成所有角色的所有gif
-    def generateAll(self):
+    def generateAll(self, skip=True):
         for charac in self.characsObj:
             
-            charac.generate_all(skip=True, progress=f'{self.characsObj.index(charac)+1}/{len(self.characsObj)}')
+            charac.generate_all(skip=skip, progress=f'{self.characsObj.index(charac)+1}/{len(self.characsObj)}')
             
         print('All charac all files exist?', self.allExist())
         
