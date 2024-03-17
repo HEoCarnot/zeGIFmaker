@@ -4,6 +4,8 @@
 
 可能需要的python包：tqdm，pillow
 
+![image](https://raw.githubusercontent.com/HEoCarnot/zeGIFmaker/master/example/marisa_599.gif "marisa/599.gif")![image](https://raw.githubusercontent.com/HEoCarnot/zeGIFmaker/master/example/suwako_698.gif "suwako/698.gif")![image](https://raw.githubusercontent.com/HEoCarnot/zeGIFmaker/master/example/reimu_570.gif "reimu/570.gif")
+
 ## 资源文件下载
 
 ### 透明图片、动作信息xml（取自则MOD群文件）
